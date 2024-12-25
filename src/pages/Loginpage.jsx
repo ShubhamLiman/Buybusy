@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom"
 import db from "../firestoreInitialsze";
 import { collection,query,where,getDocs } from "firebase/firestore";
 import { GetUserInfo } from "../userContext";
-
+import { GetCart } from "../CartContext";
 function Loginpage() {
   const navigate = useNavigate()
   const{setUser} = GetUserInfo()
-
+  const{setCart} = GetCart();
   let email = useRef();
   let password = useRef();
   
@@ -16,7 +16,7 @@ function Loginpage() {
 
   async function handleLogin() {
       const q = query(users, where("email", "==", email.current.value), where("password", "==", password.current.value));
-      
+      let user = {}
       try {
         const querySnapshot = await getDocs(q);
         if (querySnapshot.empty) {
@@ -24,7 +24,9 @@ function Loginpage() {
           navigate("/");
         } else {
           querySnapshot.forEach((doc) => {
-            setUser(doc.data())
+            user = {id: doc.id, ...doc.data()}
+            setUser(user)
+            setCart(user.cart)
           });
           navigate("/");
         }
@@ -59,11 +61,9 @@ function Loginpage() {
                                 <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
                               </div>
                           </div>
-                          <a href="#" className="text-sm font-medium text-primary-600 hover:underline text-blue-600">Forgot password?</a>
                       </div>
-                      <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-500 focus:ring-red-50" onClick={(e)=>{
+                      <button type="button" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-500 focus:ring-red-50" onClick={(e)=>{
                           e.preventDefault;
-                          e.stopPropagation;
                           handleLogin()
                       }}>Sign in</button>
                       <p className="text-sm font-light text-gray-500 dark:text-gray-400">

@@ -14,7 +14,6 @@ function Signupage() {
     let confirmpassword = useRef(null)
 
     async function handleUserRegistration(){
-        console.log(email.current.value + " " + password.current.value + " " + confirmpassword.current.value);
         
         if( password.current.value === confirmpassword.current.value){
             const user = await addDoc(collection(db,"users"),{

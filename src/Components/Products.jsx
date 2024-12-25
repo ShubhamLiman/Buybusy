@@ -1,9 +1,13 @@
 // import PropTypes from 'prop-types';
 import { GetFiltervalue } from "../Filtercontext";
+import { GetCart } from "../CartContext";
+import { GetUserInfo } from "../userContext";
 // {uniqueCategories, productsrender, handleCheckboxChange, handleProductRange, handleSliderChange, sliderValue}
 function Products() {
-   
-   const {uniqueCategories, productsrender, handleCheckboxChange, handleProductRange, handleSliderChange, sliderValue} = GetFiltervalue();
+//    console.log(GetCart());
+    const {user} = GetUserInfo();    
+    const{handleAddtoCart}=GetCart();
+    const {uniqueCategories, productsrender, handleCheckboxChange, handleProductRange, handleSliderChange, sliderValue} = GetFiltervalue();
     
   return (
     <>
@@ -58,7 +62,9 @@ function Products() {
                                     
                                     <div className="flex items-center justify-between">
                                         <span className="text-3xl font-bold text-gray-900 dark:text-white">${p.price}</span>
-                                        <a href="#" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</a>
+                                        <a href="#" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={()=>{
+                                            handleAddtoCart(p,user.id);
+                                        }}>Add to cart</a>
                                     </div>
                                 </div>
                             </div>
